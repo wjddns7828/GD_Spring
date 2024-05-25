@@ -1,0 +1,5 @@
+bean 1 설명
+
+Spring Container에 의해서 생성된 bean은 Container 밖에 있는 외부의 POJO와 연결 할 수 없다
+따라서 Bean을 작성하여 ref(주소 혹은 이름)를 통해서 연결 할 수 있다.
+

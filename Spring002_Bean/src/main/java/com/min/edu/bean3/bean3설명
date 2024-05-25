@@ -1,0 +1,9 @@
+bean3 설명
+
+Spring Bean Configuration에 의해서 생성된 bean을
+Java의 Annotaion을 통해서 주입해서 사용하게 됨
+@Resource를 통해서 Bean을 java코드에서 id를 사용하여 주입 할 수 있다.
+
+※
+Annotation을 사용하기 위해서는 반드시 
+<context:annotation-diven>을 선언해야지만 Annotation을 사용 할 수 있다.
