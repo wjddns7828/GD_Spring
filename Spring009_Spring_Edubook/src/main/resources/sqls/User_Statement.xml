@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper.UserDaoImpl">
+
+
+<!-- 
+	resultMap
+	1) 테이블을 JOIN 하여 값을 생성 ( 1:1, 1:n...), Collection, associate
+	2) column의 매핑은 VO의 Setter 메소드이다. 따라서 컬럼의 결과가 setter의 메소드명과 다른 경우
+	
+	selectList(), selectOne()은 MyBatis 반환에 따라서 객체를 선택해야함
+	쿼리의 결과가 없는 경우(공집합)
+	
+	따라서 갯수를 판단해서 처리 할 수 있는것 selectList() -> 결과를 seize() 갯수를 판단함
+	selectOne 공집합인 경유 null을 반환하기 때문에 아이디 검사같은 단일 값을 처리 할 때 사용
+	
+	MVC구조에서 값 전달 방법
+	V(name을 통해서 전달) -> primitive, DTO/VO, Map -> 값을 받음, setter 호출, {"name","value"}
+	작업의 효율을 위해서(변수의 변환)View와 DTO/Vo와 mapper의 전달 방식의 이림을 맞춰 Binding하면 좋다.
+	
+	mybatis 3.x에서 Parameter 작성하지 않아도됨
+	parameterType, resultType 상세 위치를 적을 필요도 없음
+	
+ -->
+<resultMap type="UserVo" id="userMap">
+	<result column="ID" property="id"/>
+	<result column="NAME" property="name"/>
+	<result column="EMAIL" property="email"/>
+	<result column="AUTH" property="auth"/>
+</resultMap>
+
+<select id="login" resultMap="userMap">
+	SELECT ID, NAME,EMAIL,AUTH
+	FROM USERINFO
+	WHERE ID=#{id} AND PASSWORD=#{password}
+</select>
+</mapper>

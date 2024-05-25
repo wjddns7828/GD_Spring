@@ -1,0 +1,8 @@
+anno03 설명
+
+각 POJO 클래스에 @Component를 선언하여 Bean이 될 수 있도록 선언한다
+
+그리고 반드시 annotation으로 작성된 문법은 Spring Framework이 검색하여 bean으로 만들 수 있도록
+<context:component-scan> : Spring의 모든 Annotation을 읽을 때 사용
+<context:annotation-driven> : @Autowired / @Resource 등과 같은 DI를 사용 할 때  
+<mvc:annotation-driven> : @Controller / @Service / @Repository의 Bean을 생성 할 때

@@ -1,0 +1,114 @@
+■ Spring Bean 관련 Annotation
+ - Annotation은 자바 1.5부터 지원함
+ - Annotation은 spring framework에서 빈(Bean)과 "관련된" 정보를 "설정" 할 수 있다.
+ 
+■ SpringFramework을 이용하여 구현 할 떄 Annotation 구문을 사용하기 위해서는 다음과 같은 설정이 필수다.
+- CommonAnnotationBeanPostProcesser  클래스는 Spring Bean Configuration에 <bean>으로 등록하여 Annotation이 실행 되도록 합니다.
+Ex) <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/>
+- <context:annotation-config> :bean으로 등록되어 있는 클래스의 내부에서 Annotation을 사용하기 위해서
+Ex)
+	public class Test(){
+		@Autowired
+		private Dto dto;
+	}
+	
+	=> Dto가 Bean으로 등록되어 있어도 절대 주입받지 못한다 이유는 Test클래스가 @Component혹은 <bean>으로 등록된 클래스가 아니기 떄문이다
+		즉, <context:annotation-config> 반드시 Bean에서만 동작이 된다
+- <context:component-scan base-package=""> bean을 등록하기 위한 stereoType의 생성분만 아니라 annotation도 사용 할 수 있도록 한다.
+
+■ stereoType Annotation - 클래스 위에 선언되어 클래스가 bean이 될 수 있도록 해줌
+	1) @Component : StereoType의 최상위 객체로 Bean으로 만들어지게 해줌
+	
+	2) @Controller : Spring MVC 개발에서 자동으로 Controller로 인식하여 첫번째 호출 및 분기를 해주는 Bean
+	
+	3) @Service : Bean으로 등록되어지기는 하지만 특별한 역할을 하지 않음, 중요한 역할은 IoC개발에서 Business Layer를 제어하는 역할을 하게 됨
+	
+	4) @Repository(Dao) : 일반적인 MVC 개발에서 DAO(Data Access Object)로 동작되게됨 (myBatis 연결 및 결과 받기 등을 함)
+	
+	 --> 위의 Annotation은 자동을 위한 <context:component-scan>을 통해서 등록이 됨
+	 		(Spring container가 관리 할 수 있느 bean으로 만들어짐)
+org.springframework.stereotype vs org.springframwork.beans.factory.annotation vs javax.annotation
+
+● @Component
+	패키지 : org.springframework.stereotype
+	버전 : 2.5
+	설명 : <bean>을 등록 => spring framwork의 container가 사용 할 수 있도록 등록 과정
+			1) spring bean configuration xml 파일에 <bean class=""> 선언하여 Spring Container 시작시 bean으로 만들어 지도록 함
+			2) 해당 클래스에 @Component를 작성하고 spring bean configuration.xml에 <context:component-scan base-package=""> 를 통해서 자동 등록
+			※ 범위를 가지고 있고, default singleton이며 필요시 지정도 가능 필요시 @scope 를 통해서 사용범위 지정도 가능
+
+
+● @Controller
+● @Service
+● @Repository
+
+● @Autowired
+	패키지 : org.springframework.beans.factory.annotation
+	버전 : 2.5
+	설명 : Autowired annotation은 Spring DI(의존관계)를 자동으로 설정 할 때 사용
+			작성되는 곳은 생성자, 맴버필드 방법, 메소드(setter, 일반 메소드<<잘 안함) 방식 에서 적용가능
+			
+			타입을 이용한 프로퍼티 자동 설정
+			즉, 해당 타입의 존재를 자동으로 사용할 수 있도록 해줌
+				해당 타입의 Bean 객체가 없거나, 2개 이상일 경우 예외를 발생시킴
+			프로퍼티 설정이 필수가 아닌 경우 @Autowired(required=false)로 선언하면 예외 없이 null의 입력을 허용함(default=true)
+			
+			"byType 형태"
+			의존 관계(DI)를 자동으로 설정하면 같은 타입의 Bean이 2개인 경우는 반드시 예외가 발생
+			그래서 @Qulifier를 사용하여 동일 타입의 빈 중 특정한 빈을 선택하여 사용 할 수 있다.
+			
+			Ex) 
+				@Autowired
+				@Qulifier("test01") // 생성된 bean 중에서 test01의 이름(id)를 찾아서 주입해줌
+				private Test test;
+				"byType형태"를 "byName형태"로 변경해서 사용함
+				 
+● @Qulifier
+	패키지 : org.springframework.beans.factory.annotation
+	버전 : 2.5
+	설명 : @Autowired가 타입 기반의 동작이기 때문에 같은 타입의 bean이 두개라면 특정한 bean의 이름을 사용하도록 선언
+	
+● @Reqiored
+	패키지 : org.springframework.beans.factory.annotation
+	버전 : 2.0
+	설명 : bean을 만들어 낼 때 필수 입력값/메소드/Property를 명시하는 것
+			대부분 set메소드에 사용한다
+			사용할 경우 해당 클래스를 bean으로 만들어 낼 때 값을 입력하지않으면 예외를 발생시킴
+					
+● @Resource
+	패키지 : javax.annotation
+	버전 : 2.5
+	설명 : java 1.6버전 / J2EE 5버전에서 추가된 객체
+			자바객체
+			어플리케이션에서 필요로 하는 자원을 자동연결하기 위해서 사용
+			의존하는 bean객체를 전달 할 때 사용
+			name 속성을 자동으로 연결 bean의 이름을 입력하게 됨
+			@Resource(name="test02")
+			"byName형태"
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+			

@@ -1,0 +1,36 @@
+Spring framework 작성 순서
+
+■ Spring MVC 구성 
+- DispatcherServlet, encoding Filter, accessFilter(접속 브라우저 체크)
+
+1) default 설정을 통해서 *-servlet.xml(DispatcherServlet에서 필요로 하는 Spring Bean Configuration)을 사용
+-<init-param>을 default가 아닌 정의된 *-servlet.xml을 설정
+
+2)서버(WAS)에 요청되는 모든 ServletRequest / ServletResponse를 Filter처리해서 Encoding을 
+처리 한 후 Sprin Container로 넘어 갈 수 있도록 처리 => SpringFramework에서 *Intercepter로 처리하게 됨
+
+3) 서버로 요청의 정보로 출력
+-모든 요청은 header 정보를 가지고 있고, 이 header정보를 통해서 접속링크, URL요청주소, QueryString정보
+
+
+<load-on-startup>1</load-on-startup>
+//우선순위
+
+
+■ Spring에 persistence layer 구성
+	: mybatis, datasource 등 POJO로 작업해서 사용했던 객체를 모두 Spring Bean으로 생성해 줘야한다.
+1.라이브러리 설정 
+	- 기존 라이브러리 : myBatis, OJDBC10
+	- SpringFramework 추가 라이브러리 : myBatis-Spring, spring-orm
+	- 기타 : commons-dbcp, lombok, JUnit4
+2. 작업순서 
+	- DispatcherServlet이 동작 될 때 Model의 객체가 bean으로 작성되고 생성되어야함
+	web.xml > context-param의 설정을 통해서 Spring bean Configuration을 설정함
+3. Spring bean Configuration(Model단)
+	- properties를 bean으로 만듬
+	- datasource bean
+	- mybatis sqlSessionFactory를 Bean으로
+	- sqlSessionFactory를 bean을 사용하여 Spring이 DI/IoC를 사용되는 SqlSessionTemplate bean을 만듬
+	
+**Spring은 db에서 생성된걸 template이라고 함
+4. JUnit4 Test -> 생성된 SqlSessionTemplate bean을 @Autowired하여 myBatis 호출

@@ -1,0 +1,49 @@
+SpringFramework 작성 순서
+
+1) Maven설정
+-create maven project : maven-archetype-webapp 1.0생성
+-pom.xml : 프로젝트의 build 설정
+			maven-compiler-plugin 3.10.1
+			maven-war-plugin 3.3.2
+		maven update
+-project > facets 설정
+
+pom.xml 설정
+ <properties>
+		<java-version>17</java-version>
+		<!--전자정부 프레임 버전-->
+		<org.springframework-version>5.3.20</org.springframework-version>
+		<org.aspectj-version>1.9.9.1</org.aspectj-version>
+		<org.slf4j-version>2.0.3</org.slf4j-version>
+	</properties>
+	
+2. Spring필요 라이브러리 dependency 작업
+	
+3.Spring MVC 구조를 주요 클래스인 DispatcherServelt을 작성해 줌
+
+	WEB.XML에서 CTRL+SPACE를 하면 있음
+	 <!-- The front controller of this Spring Web application, responsible for handling all application requests -->
+		<servlet>
+			<servlet-name>springDispatcherServlet</servlet-name>
+			<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+			<init-param>
+				<param-name>contextConfigLocation</param-name>
+				<param-value>location</param-value>
+			</init-param>
+			<load-on-startup>1</load-on-startup>
+		</servlet>
+	
+		<!-- Map all requests to the DispatcherServlet for handling -->
+		<servlet-mapping>
+			<servlet-name>springDispatcherServlet</servlet-name>
+			<url-pattern>url</url-pattern>
+		</servlet-mapping>
+-<init-param>의 설정이 되어있지 않다면 default는 <servlet-name>의 값으로 -servlet.xml의 이름으로 만들어진다
+
+4.3번의 Spring bean configuration에 Spring container가 설정해야할 tag를 작성한다
+-<context:component-scan base-package="">,<mvc:annotation-riven/>
+
+5. 로직이 처리될 FrontController 클래스를 작성함
+-base-package 하위의 모든 곳에서 작성
+	
+	

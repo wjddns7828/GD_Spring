@@ -1,0 +1,27 @@
+anno05 설명
+
+※주입 Annotation 검색 순서
+
+@Autowired
+1) 주입되는 우선순위 : 타입 > 이름 > @Qulifier
+2) 주입되는 타입을 첫번째 우선순위를 갖는다
+	-xml, bean에 id가 없는 bean이 있다면 자동으로 같은 타입의 bean을 자동으로 주입한다
+	-xml에  여러개의 bean이 같은 타입으로 선언되어 있고 id가 student, stu01, stu02라면
+	사용되는 bean은 id를 통해 사용해야한다
+	-변수명에 상관없이 해당 bean을 주입받고 싶다면 @Qulifier를 사용해야 한다
+	Ex) @Autowired
+		@Qulifier("stu01")
+		private String student; 
+@Resource
+1) 주입되는 우선순위 : 이름 > 타입 > @Qulifier
+2) 주입되는 이름을 첫번째 우선순위로 갖는다 
+	- @Resource 만 사용 할 경우 변수명과 같은 id의 bean을 찾는다.
+	- 같은 ID가 없다면 type을 검색한다
+		만약 3개를의 같은 타입으로 bean이 되어 있다면 , single match bean ~~, student, stu01, stu02
+3) 	@Resource
+	@Qulifier("stu01") 는 @Resource(name="stu01)과 같이 여러개중 선택하여 사용
+	private String student;
+	
+★★★★	@Autowired와 @Resource의 차이점 ?	★★★★
+		Spring Framework의 객체이냐 아니면 java객체로 Framework에 의존하지 않느냐의 차이이다.
+		
